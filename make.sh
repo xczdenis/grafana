@@ -43,6 +43,25 @@ di() {
 }
 
 
+env() {
+    if [ -f .env ]; then
+        read -p "File .env already exists. Overwrite it [y/n]: " yn
+        case $yn in
+            [Yy]* )
+                cp .env.template .env
+                echo "File .env has been overwritten!"
+                ;;
+            * )
+                echo "Nothing happened."
+                ;;
+        esac
+    else
+        cp .env.template .env
+        echo "File .env created from .env.template!"
+    fi
+}
+
+
 down() {
     log_header "Down containers"
     run_docker_compose "${COMPOSE_PROFILE_DEFAULT}" down
@@ -61,6 +80,9 @@ case "$1" in
         ;;
     di)
         di
+        ;;
+    env)
+        env
         ;;
     *)
         echo "Usage: $0 {down|ping|info|di}"
