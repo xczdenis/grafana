@@ -154,9 +154,16 @@ down:
 	$(call log, Down containers)
 	$(call run_docker_compose, ${COMPOSE_PROFILE_DEFAULT} down)
 
-# build and run docker containers in demon mode: influxdb (docker-compose.influxdb.yml)
-.PHONY: runinflux
+# build and run docker containers in demon mode: docker-compose.influxdb.yml only profile influx
+.PHONY: influx
 influx: down
+	$(call log, Run containers)
+	$(call run_docker_compose, -f docker-compose.influxdb.yml ${COMPOSE_PROFILE_DEFAULT} up -d --build)
+
+
+# build and run docker containers in demon mode: docker-compose.influxdb.yml all services
+.PHONY: influx-allin
+influx-allin: down
 	$(call log, Run containers)
 	$(call run_docker_compose, -f docker-compose.influxdb.yml ${COMPOSE_PROFILE_DEFAULT} up -d --build)
 

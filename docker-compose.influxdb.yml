@@ -3,6 +3,7 @@ x-base-service: &base-service
     restart: "on-failure"
     profiles:
       - default
+      - influx
 
 services:
   grafana:
@@ -16,6 +17,8 @@ services:
       - ./docker/grafana/provisioning:/etc/grafana/provisioning
     ports:
       - ${GRAFANA_PORT}:3000
+    profiles:
+      - default
   
   influxdb:
     image: influxdb:alpine
