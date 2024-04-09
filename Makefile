@@ -57,7 +57,7 @@ endef
 
 
 define run_docker_compose
-	@DOCKER_BUILDKIT=${DOCKER_BUILDKIT} COMPOSE_PROJECT_NAME=${PROJECT_NAME} docker-compose $(strip ${1})
+	@echo DOCKER_BUILDKIT=${DOCKER_BUILDKIT} COMPOSE_PROJECT_NAME=${PROJECT_NAME} docker-compose $(strip ${1})
 endef
 
 
@@ -158,7 +158,7 @@ down:
 .PHONY: influx
 influx: down
 	$(call log, Run containers)
-	$(call run_docker_compose, -f docker-compose.influxdb.yml ${COMPOSE_PROFILE_DEFAULT} up -d --build)
+	$(call run_docker_compose, -f docker-compose.influxdb.yml --profile influx up -d --build)
 
 
 # build and run docker containers in demon mode: docker-compose.influxdb.yml all services
