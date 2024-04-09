@@ -1,0 +1,37 @@
+x-base-service: &base-service
+    platform: ${DOCKER_IMG_PLATFORM:-linux/amd64}
+    restart: "on-failure"
+    profiles:
+      - default
+
+services:
+  grafana:
+    <<: *base-service
+    image: grafana/grafana:latest
+    environment:
+      - GF_PATHS_PROVISIONING=/etc/grafana/provisioning
+      - GF_AUTH_ANONYMOUS_ENABLED=true
+      - GF_AUTH_ANONYMOUS_ORG_ROLE=Admin
+    volumes:
+      - ./docker/grafana/provisioning:/etc/grafana/provisioning
+    ports:
+      - ${GRAFANA_PORT}:3000
+  
+  influxdb:
+    image: influxdb:alpine
+    env_file: .env
+    volumes:
+      - influx_data:/var/lib/influxdb2:rw
+    ports:
+      - ${INFLUXDB_PORT}:8086
+
+  telegraf:
+    image: telegraf:alpine
+    env_file: .env
+    depends_on:
+      - influxdb
+    volumes:
+      - ./docker/telegraf/telegraf.conf:/etc/telegraf/telegraf.conf:ro
+
+volumes:
+  influx_data:
