@@ -8,7 +8,7 @@ x-base-service: &base-service
 services:
   grafana:
     <<: *base-service
-    image: grafana/grafana:latest
+    image: ${DOCKERHUB}grafana/grafana:latest
     environment:
       - GF_PATHS_PROVISIONING=/etc/grafana/provisioning
       - GF_AUTH_ANONYMOUS_ENABLED=true
@@ -21,7 +21,7 @@ services:
       - default
   
   influxdb:
-    image: influxdb:alpine
+    image: ${DOCKERHUB}influxdb:alpine
     env_file: .env
     volumes:
       - influx_data:/var/lib/influxdb2:rw
@@ -29,7 +29,7 @@ services:
       - ${INFLUXDB_PORT}:8086
 
   telegraf:
-    image: telegraf:alpine
+    image: ${DOCKERHUB}telegraf:alpine
     env_file: .env
     depends_on:
       - influxdb

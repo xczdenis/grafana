@@ -57,7 +57,7 @@ endef
 
 
 define run_docker_compose
-	@echo DOCKER_BUILDKIT=${DOCKER_BUILDKIT} COMPOSE_PROJECT_NAME=${PROJECT_NAME} docker-compose $(strip ${1})
+	@DOCKER_BUILDKIT=${DOCKER_BUILDKIT} COMPOSE_PROJECT_NAME=${PROJECT_NAME} docker-compose $(strip ${1})
 endef
 
 
